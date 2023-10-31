@@ -4,6 +4,8 @@
 
 ### Breaking changes
 
+- Updated the SNARK trait to add RngCore parameters to the verification functions.
+
 ### Features
 
 ### Improvements

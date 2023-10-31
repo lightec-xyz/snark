@@ -54,13 +54,14 @@ pub trait SNARK<F: PrimeField> {
     /// Checks that `proof` is a valid proof of the satisfaction of circuit
     /// encoded in `circuit_vk`, with respect to the public input `public_input`,
     /// specified as R1CS constraints.
-    fn verify(
+    fn verify<R: RngCore>(
         circuit_vk: &Self::VerifyingKey,
         public_input: &[F],
         proof: &Self::Proof,
+        rng: &mut R,
     ) -> Result<bool, Self::Error> {
         let pvk = Self::process_vk(circuit_vk)?;
-        Self::verify_with_processed_vk(&pvk, public_input, proof)
+        Self::verify_with_processed_vk(&pvk, public_input, proof, rng)
     }
 
     /// Preprocesses `circuit_vk` to enable faster verification.
@@ -71,10 +72,11 @@ pub trait SNARK<F: PrimeField> {
     /// Checks that `proof` is a valid proof of the satisfaction of circuit
     /// encoded in `circuit_pvk`, with respect to the public input `public_input`,
     /// specified as R1CS constraints.
-    fn verify_with_processed_vk(
+    fn verify_with_processed_vk<R: RngCore>(
         circuit_pvk: &Self::ProcessedVerifyingKey,
         public_input: &[F],
         proof: &Self::Proof,
+        rng: &mut R,
     ) -> Result<bool, Self::Error>;
 }
 
